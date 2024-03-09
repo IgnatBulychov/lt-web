@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Langs } from "@/types/index";
+import { Lang } from "@/types/index";
 import QuizSentence from "@/components/Quizes/QuizSentence";
 import type { Sentence } from "@/types/index";
 type Props = {
@@ -41,7 +41,7 @@ export default function QuizPage({ sentences }: Props) {
         <QuizSentence
           sentence={sentences[currentSentence]}
           finish={finish}
-          lang={Langs.Ru}
+          lang={Lang.Ru}
         />
       </div>
 

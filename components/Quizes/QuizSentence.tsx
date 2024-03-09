@@ -5,14 +5,14 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Flip from "gsap/Flip";
 import { shuffle } from "lodash";
-import type { Langs, Word, Sentence } from "@/types/index";
+import type { Lang, Word, Sentence } from "@/types/index";
 
 gsap.registerPlugin(Flip);
 
 type Props = {
   sentence: Sentence;
   reverse?: boolean;
-  lang: Langs;
+  lang: Lang;
   finish: () => void;
 };
 
@@ -38,12 +38,12 @@ export default function QuizSentence({
     let initWords = [];
 
     if (reverse) {
-      initWords = sentence.translates[lang].split(" ").map((word, index) => ({
+      initWords = sentence.translations[lang].split(" ").map((word, index) => ({
         id: index,
         text: word,
       }));
     } else {
-      initWords = sentence.sentence.split(" ").map((word, index) => ({
+      initWords = sentence.text.split(" ").map((word, index) => ({
         id: index,
         text: word,
       }));
@@ -70,9 +70,9 @@ export default function QuizSentence({
 
     if (
       (!reverse &&
-        wordsResult.map((el) => el.text).join(" ") === sentence.sentence) ||
+        wordsResult.map((el) => el.text).join(" ") === sentence.text) ||
       (reverse &&
-        wordsResult.map((el) => el.text).join(" ") === sentence.translates.ru)
+        wordsResult.map((el) => el.text).join(" ") === sentence.translations.ru)
     ) {
       setStopMoving(true);
       finish();
@@ -101,7 +101,7 @@ export default function QuizSentence({
         <div className="mb-6 text-xs">
           Составьте предложение: <br />{" "}
         </div>
-        {reverse ? sentence.sentence : sentence.translates.ru}
+        {reverse ? sentence.text : sentence.translations.ru}
       </div>
 
       <div className="flex min-h-24 flex-wrap items-center justify-center gap-2">

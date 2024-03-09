@@ -1,25 +1,29 @@
 "use client";
-import sentences from "@/consts/sentences";
+
 import Quiz from "@/components/Quizes/Quiz";
-import { useState } from "react";
-import { Sentence, Tag, Tense, Aspect, NGSLvariant } from "@/types/index";
+import { useEffect, useState } from "react";
+import { Sentence, Tag, SentencesType, Tense, Aspect } from "@/types/index";
 import Filters from "@/components/Quizes/Filters";
+import useApi from "@/hooks/useApi";
+
 export default function Training() {
   const [filter, setFilter] = useState<Array<Tag>>([]);
 
-  // ...Object.values(Tense as const),
-  // ...Object.values(Aspect as const),
-  // ...Object.values(NGSLvariant as const),
   const [currentQuest, setCurrentQuest] = useState<Array<Sentence>>([]);
 
-  function start(): void {
+  const { api } = useApi();
+
+  async function start() {
     setCurrentQuest([]);
-    setCurrentQuest(
-      sentences.filter((sentence) =>
-        sentence.tags.every((tag) => filter.includes(tag)),
-      ),
-    );
+
+    const sentences = await api.getSentences(filter);
+    console.log(sentences);
+    setCurrentQuest(sentences);
   }
+
+  useEffect(() => {
+    setFilter([SentencesType.Statements, Tense.Present, Aspect.Simple]);
+  }, []);
 
   return (
     <>

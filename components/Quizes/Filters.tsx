@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction } from "react";
-import { Tag, Tense, Aspect, ToBe, NGSLvariant, Voice } from "@/types/index";
+import { Tag, SentencesType, Tense, Aspect, ToBe, Voice } from "@/types/index";
 
 type Props = {
   filter: Array<Tag>;
@@ -9,6 +9,21 @@ type Props = {
 };
 
 export default function Filters({ filter, setFilter, start }: Props) {
+  const sentencesTypes = [
+    {
+      name: "Statements",
+      type: SentencesType.Statements,
+    },
+    {
+      name: "Questions",
+      type: SentencesType.Questions,
+    },
+    {
+      name: "Negation",
+      type: SentencesType.Negation,
+    },
+  ];
+
   const tenses = [
     {
       name: "Present",
@@ -60,32 +75,35 @@ export default function Filters({ filter, setFilter, start }: Props) {
     },
   ];
 
-  const NGSLvariants = [
-    {
-      name: "NGSL 1 - 100",
-      type: NGSLvariant.NGSLfrom1to100,
-    },
-    {
-      name: "NGSL 101 - 200",
-      type: NGSLvariant.NGSLfrom101to200,
-    },
-    {
-      name: "NGSL 201 - 300",
-      type: NGSLvariant.NGSLfrom201to300,
-    },
-    {
-      name: "NGSL 301 - 400",
-      type: NGSLvariant.NGSLfrom301to400,
-    },
-    {
-      name: "NGSL 401 - 500",
-      type: NGSLvariant.NGSLfrom401to500,
-    },
-  ];
-
   return (
     <>
       <div className="rounded-md p-5 shadow-md">
+        <div className="mb-1 text-sm text-gray-500">Sentences types:</div>
+
+        {sentencesTypes.map((sentencesType) => (
+          <div className="mb-2 flex items-center" key={sentencesType.name}>
+            <input
+              id={`checkbox-simple-${sentencesType.name}`}
+              type="checkbox"
+              className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600"
+              checked={filter.includes(sentencesType.type)}
+              onChange={(e) =>
+                e.target.checked
+                  ? setFilter([...filter, sentencesType.type])
+                  : setFilter([
+                      ...filter.filter((tag) => tag != sentencesType.type),
+                    ])
+              }
+            />
+            <label
+              htmlFor={`checkbox-simple-${sentencesType.name}`}
+              className="ms-2 text-sm font-medium text-gray-700  "
+            >
+              {sentencesType.name}
+            </label>
+          </div>
+        ))}
+
         <div className="mb-1 text-sm text-gray-500">Tenses:</div>
 
         {tenses.map((tense) => (
@@ -181,30 +199,6 @@ export default function Filters({ filter, setFilter, start }: Props) {
         ))}
 
         <div className="mb-1 mt-4 text-sm text-gray-500">NGSL:</div>
-
-        {NGSLvariants.map((NGSLvariant) => (
-          <div className="mb-2 flex items-center" key={NGSLvariant.name}>
-            <input
-              id={`checkbox-simple-${NGSLvariant.name}`}
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600"
-              checked={filter.includes(NGSLvariant.type)}
-              onChange={(e) =>
-                e.target.checked
-                  ? setFilter([...filter, NGSLvariant.type])
-                  : setFilter([
-                      ...filter.filter((tag) => tag != NGSLvariant.type),
-                    ])
-              }
-            />
-            <label
-              htmlFor={`checkbox-simple-${NGSLvariant.name}`}
-              className="ms-2 text-sm font-medium text-gray-700  "
-            >
-              {NGSLvariant.name}
-            </label>
-          </div>
-        ))}
 
         <div className="mt-4 text-center">
           <button
