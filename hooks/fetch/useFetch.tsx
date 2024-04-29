@@ -12,7 +12,7 @@ export default function useFetch() {
     }
 
     console.log(process.env);
-    const response = await fetch("http://127.0.0.1:3000" + url);
+    const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + url);
 
     if (response.ok) {
       let json = await response.json();

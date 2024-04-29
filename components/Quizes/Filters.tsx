@@ -1,14 +1,23 @@
 "use client";
 import { Dispatch, SetStateAction } from "react";
 import { Tag, SentencesType, Tense, Aspect, ToBe, Voice } from "@/types/index";
+import { NgslRange } from "@/types/sentences/ngsl";
 
 type Props = {
-  filter: Array<Tag>;
-  setFilter: Dispatch<SetStateAction<Array<Tag>>>;
+  tags: Array<Tag>;
+  setTags: Dispatch<SetStateAction<Array<Tag>>>;
+  ngslIndexes: NgslRange;
+  setNgslIndexes: Dispatch<SetStateAction<NgslRange>>;
   start: () => void;
 };
 
-export default function Filters({ filter, setFilter, start }: Props) {
+export default function Filters({
+  tags,
+  setTags,
+  ngslIndexes,
+  setNgslIndexes,
+  start,
+}: Props) {
   const sentencesTypes = [
     {
       name: "Statements",
@@ -58,40 +67,39 @@ export default function Filters({ filter, setFilter, start }: Props) {
     },
   ];
 
-  const toBe = {
-    name: "To Be",
-    type: ToBe.ToBe,
-  };
+  // const toBe = {
+  //   name: "To Be",
+  //   type: ToBe.ToBe,
+  // };
 
-  const voises = [
-    {
-      name: "Active",
-      type: Voice.Active,
-    },
+  // const voises = [
+  //   {
+  //     name: "Active",
+  //     type: Voice.Active,
+  //   },
 
-    {
-      name: "Passive",
-      type: Voice.Passive,
-    },
-  ];
+  //   {
+  //     name: "Passive",
+  //     type: Voice.Passive,
+  //   },
+  // ];
 
   return (
     <>
-      <div className="rounded-md p-5 shadow-md">
+      <div className="h-screen p-5 shadow-lg">
         <div className="mb-1 text-sm text-gray-500">Sentences types:</div>
-
         {sentencesTypes.map((sentencesType) => (
           <div className="mb-2 flex items-center" key={sentencesType.name}>
             <input
               id={`checkbox-simple-${sentencesType.name}`}
               type="checkbox"
               className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600"
-              checked={filter.includes(sentencesType.type)}
+              checked={tags.includes(sentencesType.type)}
               onChange={(e) =>
                 e.target.checked
-                  ? setFilter([...filter, sentencesType.type])
-                  : setFilter([
-                      ...filter.filter((tag) => tag != sentencesType.type),
+                  ? setTags([...tags, sentencesType.type])
+                  : setTags([
+                      ...tags.filter((tag) => tag != sentencesType.type),
                     ])
               }
             />
@@ -103,20 +111,18 @@ export default function Filters({ filter, setFilter, start }: Props) {
             </label>
           </div>
         ))}
-
         <div className="mb-1 text-sm text-gray-500">Tenses:</div>
-
         {tenses.map((tense) => (
           <div className="mb-2 flex items-center" key={tense.name}>
             <input
               id={`checkbox-simple-${tense.name}`}
               type="checkbox"
               className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600"
-              checked={filter.includes(tense.type)}
+              checked={tags.includes(tense.type)}
               onChange={(e) =>
                 e.target.checked
-                  ? setFilter([...filter, tense.type])
-                  : setFilter([...filter.filter((tag) => tag != tense.type)])
+                  ? setTags([...tags, tense.type])
+                  : setTags([...tags.filter((tag) => tag != tense.type)])
               }
             />
             <label
@@ -127,20 +133,18 @@ export default function Filters({ filter, setFilter, start }: Props) {
             </label>
           </div>
         ))}
-
         <div className="mb-1 mt-4 text-sm text-gray-500">Aspects:</div>
-
         {aspects.map((aspect) => (
           <div className="mb-2 flex items-center" key={aspect.name}>
             <input
               id={`checkbox-simple-${aspect.name}`}
               type="checkbox"
               className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600"
-              checked={filter.includes(aspect.type)}
+              checked={tags.includes(aspect.type)}
               onChange={(e) =>
                 e.target.checked
-                  ? setFilter([...filter, aspect.type])
-                  : setFilter([...filter.filter((tag) => tag != aspect.type)])
+                  ? setTags([...tags, aspect.type])
+                  : setTags([...tags.filter((tag) => tag != aspect.type)])
               }
             />
             <label
@@ -151,8 +155,7 @@ export default function Filters({ filter, setFilter, start }: Props) {
             </label>
           </div>
         ))}
-
-        <div className="mb-1 mt-4 text-sm text-gray-500">To be:</div>
+        {/* <div className="mb-1 mt-4 text-sm text-gray-500">To be:</div>
 
         <div className="mb-2 flex items-center" key={toBe.name}>
           <input
@@ -162,8 +165,8 @@ export default function Filters({ filter, setFilter, start }: Props) {
             checked={filter.includes(toBe.type)}
             onChange={(e) =>
               e.target.checked
-                ? setFilter([...filter, toBe.type])
-                : setFilter([...filter.filter((tag) => tag != toBe.type)])
+                ? setTags([...filter, toBe.type])
+                : setTags([...filter.filter((tag) => tag != toBe.type)])
             }
           />
           <label
@@ -185,8 +188,8 @@ export default function Filters({ filter, setFilter, start }: Props) {
               checked={filter.includes(voise.type)}
               onChange={(e) =>
                 e.target.checked
-                  ? setFilter([...filter, voise.type])
-                  : setFilter([...filter.filter((tag) => tag != voise.type)])
+                  ? setTags([...filter, voise.type])
+                  : setTags([...filter.filter((tag) => tag != voise.type)])
               }
             />
             <label
@@ -196,9 +199,43 @@ export default function Filters({ filter, setFilter, start }: Props) {
               {voise.name}
             </label>
           </div>
-        ))}
-
+        ))} */}
         <div className="mb-1 mt-4 text-sm text-gray-500">NGSL:</div>
+
+        <div className="mt-2 flex">
+          <div className="ms-2 w-14 text-sm font-medium text-gray-700">
+            From
+          </div>
+          <input
+            type="number"
+            className="w-16 rounded border "
+            min={100}
+            max={2700}
+            defaultValue={100}
+            onChange={(e) =>
+              setNgslIndexes({
+                from: Number(e.target.value),
+                to: ngslIndexes.to,
+              })
+            }
+          />
+        </div>
+        <div className="mt-2 flex">
+          <div className="ms-2 w-14 text-sm font-medium text-gray-700">To</div>
+          <input
+            type="number"
+            className="w-16 rounded border"
+            min={200}
+            max={2801}
+            defaultValue={200}
+            onChange={(e) =>
+              setNgslIndexes({
+                from: ngslIndexes.from,
+                to: Number(e.target.value),
+              })
+            }
+          />
+        </div>
 
         <div className="mt-4 text-center">
           <button
