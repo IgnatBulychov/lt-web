@@ -1,5 +1,5 @@
 "use client";
-
+"use client";
 import Quiz from "@/components/Quizes/Quiz";
 import { useEffect, useState } from "react";
 import { Sentence, Tag, SentencesType, Tense, Aspect } from "@/types/index";
@@ -20,22 +20,40 @@ export default function Training() {
 
   const [currentQuest, setCurrentQuest] = useState<Array<Sentence>>([]);
 
-  const { api } = useApi();
+  const [sentences, setSentences] = useState<Array<Sentence>>([]);
 
-  async function start() {
-    setCurrentQuest([]);
+  function start(): void {
+    //  setCurrentQuest([]);
 
-    const sentences = await api.getSentences({ tags, ngslIndexes });
     console.log(sentences);
-    setCurrentQuest(sentences);
+    setCurrentQuest(
+      sentences.filter((sentence) =>
+        sentence.tags.every((tag) => tags.includes(tag)),
+      ),
+    );
+
+    // console.log(
+    //   sentences.filter((sentence) =>
+    //     sentence.tags.every((tag) => tags.includes(tag)),
+    //   ),
+    // );
   }
 
-  useEffect(() => {}, []);
+  const { api } = useApi();
+
+  useEffect(() => {
+    async function getSentences() {
+      const response = await api.getSentences();
+      setSentences(response.sentences);
+    }
+
+    getSentences();
+  }, []);
 
   return (
     <>
       <div className="flex gap-x-12">
-        <div>
+        <div className="absolute z-20 bg-white md:static ">
           <Filters
             tags={tags}
             setTags={setTags}
@@ -44,7 +62,7 @@ export default function Training() {
             start={start}
           />
         </div>
-        <div className="flex flex-1 justify-center pt-12">
+        <div className="z-10 flex flex-1 justify-center  pt-12">
           {currentQuest.length > 0 && <Quiz sentences={currentQuest} />}
         </div>
       </div>

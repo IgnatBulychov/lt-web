@@ -7,11 +7,7 @@ export default function useApi() {
   const { $fetch } = useFetch();
 
   const api = {
-    getSentences: async (query: { tags: Array<Tag>; ngslIndexes: NgslRange }) =>
-      await $fetch(
-        Method.GET,
-        `/sentences?${new URLSearchParams({ tags: query.tags.join(","), ngslFrom: query.ngslIndexes.from.toString(), ngslTo: query.ngslIndexes.to.toString() })}`,
-      ),
+    getSentences: async () => await $fetch(Method.GET, `/base.json`),
   };
 
   return {

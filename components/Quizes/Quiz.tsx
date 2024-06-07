@@ -32,11 +32,18 @@ export default function QuizPage({ sentences }: Props) {
 
   return (
     <div>
+      <div className="text-center">
+        {sentences[currentSentence].tags.map((tag) => (
+          <span className="mr-2  rounded-2xl bg-green-400 px-2 text-sm text-white ">
+            {tag}
+          </span>
+        ))}
+      </div>
+
       <div className="my-2 text-center">
         {currentSentence + 1}/{sentences.length}
       </div>
 
-      {sentences[currentSentence].tags.join(",")}
       <div>
         <QuizSentence
           sentence={sentences[currentSentence]}

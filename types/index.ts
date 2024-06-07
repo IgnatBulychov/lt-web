@@ -42,6 +42,11 @@ export type Translate = {
   text: string;
 };
 
+export type NgslRange = {
+  from: number;
+  to: number;
+};
+
 export interface Sentence {
   id: number;
   text: string;
@@ -49,4 +54,5 @@ export interface Sentence {
     [key in Lang]: string;
   };
   tags: Array<Tag>;
+  ngslIndexes: Array<number>;
 }
